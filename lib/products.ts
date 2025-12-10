@@ -89,3 +89,9 @@ export function getSlabById(handle: string): Slab | undefined {
     const slabs = getAllSlabs();
     return slabs.find(s => s.id === handle);
 }
+
+export function getRelatedSlabs(currentId: string, limit: number = 3): Slab[] {
+    const slabs = getAllSlabs();
+    // Simple logic: exclude current, take random or first N
+    return slabs.filter(s => s.id !== currentId).slice(0, limit);
+}

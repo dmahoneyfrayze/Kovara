@@ -2,25 +2,31 @@ import { Button } from "@/components/ui/Button";
 import { Check, Truck, ShieldCheck, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getSlabById } from "@/lib/products";
+import { getSlabById, getRelatedSlabs } from "@/lib/products";
+import { SlabCard } from "@/components/slabs/SlabCard";
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
-    // Decode URI component for handle which might have path encoding, though handles are usually safe
     const slab = getSlabById(decodeURIComponent(id));
     if (!slab) return { title: "Slab Not Found" };
 
+    // remove html from desc for meta
+    const cleanDesc = slab.description?.replace(/<[^>]*>?/gm, '');
+
     return {
         title: `${slab.title} | Kovara`,
-        description: `Buy ${slab.species} live edge slab ${slab.dimensions}. ${slab.description ? slab.description.substring(0, 100) : ''}...`,
+        description: `Buy ${slab.species} live edge slab ${slab.dimensions}. ${cleanDesc ? cleanDesc.substring(0, 100) : ''}...`,
     }
 }
 
 export default async function SlabDetail({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
-    const slab = getSlabById(decodeURIComponent(id));
+    const slabId = decodeURIComponent(id);
+    const slab = getSlabById(slabId);
 
     if (!slab) return notFound();
+
+    const relatedSlabs = getRelatedSlabs(slabId, 3);
 
     return (
         <div className="bg-white min-h-screen pb-20">
@@ -99,16 +105,58 @@ export default async function SlabDetail({ params }: { params: Promise<{ id: str
                             </p>
                         </div>
 
-                        <div className="mt-8 flex items-center justify-center gap-8 text-slate-400">
-                            <div className="flex items-center gap-2 text-xs">
-                                <Truck className="w-4 h-4" /> Nationwide Shipping
+                        {/* Trust Badges */}
+                        <div className="grid grid-cols-2 gap-4 mt-8 pt-8 border-t border-slate-200">
+                            <div className="flex items-start gap-3">
+                                <Truck className="w-5 h-5 text-amber-600 mt-1" />
+                                <div>
+                                    <span className="font-bold text-slate-900 block text-sm">Nationwide Shipping</span>
+                                    <span className="text-xs text-slate-500">Crated & Insured Delivery</span>
+                                </div>
                             </div>
-                            <div className="flex items-center gap-2 text-xs">
-                                <ShieldCheck className="w-4 h-4" /> Evaluation Guarantee
+                            <div className="flex items-start gap-3">
+                                <ShieldCheck className="w-5 h-5 text-amber-600 mt-1" />
+                                <div>
+                                    <span className="font-bold text-slate-900 block text-sm">Evaluation Guarantee</span>
+                                    <span className="text-xs text-slate-500">Return if not as described</span>
+                                </div>
+                            </div>
+                            <div className="flex items-start gap-3">
+                                <Check className="w-5 h-5 text-amber-600 mt-1" />
+                                <div>
+                                    <span className="font-bold text-slate-900 block text-sm">Kiln Dried</span>
+                                    <span className="text-xs text-slate-500">To 6-8% moisture content</span>
+                                </div>
+                            </div>
+                            <div className="flex items-start gap-3">
+                                <Check className="w-5 h-5 text-amber-600 mt-1" />
+                                <div>
+                                    <span className="font-bold text-slate-900 block text-sm">Sustainably Sourced</span>
+                                    <span className="text-xs text-slate-500">Ethical harvesting practices</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                {/* Related Slabs */}
+                {relatedSlabs.length > 0 && (
+                    <div className="mt-24 pt-12 border-t border-slate-200">
+                        <h2 className="text-2xl font-bold mb-8">You Might Also Like</h2>
+                        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {relatedSlabs.map((s) => (
+                                <SlabCard
+                                    key={s.id}
+                                    id={s.id}
+                                    species={s.species}
+                                    dimensions={s.dimensions}
+                                    imageUrl={s.images[0]}
+                                    isAvailable={s.isAvailable}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                )}
             </div>
 
             {/* Mobile Sticky CTA */}
