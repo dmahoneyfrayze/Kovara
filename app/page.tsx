@@ -125,6 +125,45 @@ export default function Home() {
         </div>
       </section>
 
+      {/* 3.b Meet the Makers - Brand Story */}
+      <section className="py-20 bg-slate-50 border-b border-slate-100">
+        <div className="container mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
+          <div className="order-2 md:order-1">
+            <div className="aspect-[4/3] bg-slate-200 rounded-lg overflow-hidden relative group">
+              <img
+                src="https://shopkovara.com/cdn/shop/files/Kovara-Team-Photo.jpg?v=1691508287&width=800"
+                alt="Kovara Team in Arlington Studio"
+                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+              />
+              <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"></div>
+            </div>
+          </div>
+          <div className="order-1 md:order-2 space-y-6">
+            <div className="inline-flex items-center gap-2 text-amber-600 font-bold uppercase tracking-wider text-xs">
+              <span className="w-8 h-px bg-amber-600"></span>
+              The Kovara Standard
+            </div>
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-slate-900">
+              Hand-finished in Arlington.<br />Not a drop-ship warehouse.
+            </h2>
+            <p className="text-lg text-slate-600 leading-relaxed">
+              We are a team of perfectionists based right here in DFW. Every slab that enters our studio is flattened, sanded, and finished by hand to ensure it can withstand decades of family dinners and boardroom meetings.
+            </p>
+            <div className="flex items-center gap-4 pt-2">
+              <div className="flex -space-x-3">
+                <div className="w-10 h-10 rounded-full bg-slate-300 border-2 border-white"></div>
+                <div className="w-10 h-10 rounded-full bg-slate-400 border-2 border-white"></div>
+                <div className="w-10 h-10 rounded-full bg-slate-500 border-2 border-white flex items-center justify-center text-[10px] text-white font-bold">+4</div>
+              </div>
+              <div className="text-sm">
+                <span className="block font-bold text-slate-900">Meet the Team</span>
+                <span className="text-slate-500">Craftsmen, Designers, & Woodworkers</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* 4. Featured Slabs Carousel */}
       <section className="py-20 bg-slate-50">
         <div className="container mx-auto px-4">
