@@ -25,7 +25,7 @@ export function Header() {
             <div className="container mx-auto flex h-16 items-center justify-between px-4">
                 {/* Logo */}
                 <Link href="/" className="flex items-center space-x-2 z-50">
-                    <span className="text-xl font-bold tracking-tight uppercase">Kovara</span>
+                    <img src="/logo.jpg" alt="Kovara" className="h-10 w-auto object-contain" />
                 </Link>
 
                 {/* Desktop Navigation */}

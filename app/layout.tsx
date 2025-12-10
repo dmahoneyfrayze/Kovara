@@ -1,9 +1,22 @@
 import type { Metadata } from "next";
+import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { LeadCaptureModal } from "@/components/marketing/LeadCaptureModal";
 import { JsonLd } from "@/components/seo/JsonLd";
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair",
+  display: "swap",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: {
@@ -11,6 +24,10 @@ export const metadata: Metadata = {
     template: "%s | Kovara"
   },
   description: "Handcrafted live edge dining tables, conference tables, and custom furniture using premium Parota and Black Walnut slabs.",
+  icons: {
+    icon: '/icon.jpg',
+    apple: '/icon.jpg',
+  },
   robots: {
     index: false,
     follow: false
@@ -24,7 +41,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased text-slate-900 font-sans">
+      <body className={`${inter.variable} ${playfair.variable} antialiased text-slate-900 font-sans`}>
         <Header />
         <main className="min-h-screen">
           {children}
