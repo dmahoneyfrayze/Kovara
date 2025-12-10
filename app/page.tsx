@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/Button";
 import { SlabCard } from "@/components/slabs/SlabCard";
+import { FadeIn } from "@/components/ui/FadeIn";
 import Link from "next/link";
-import { ArrowRight, Check, MoveRight, Star } from "lucide-react";
+import { ArrowRight, Star, ShoppingCart, MessageSquare, MoveRight, Check } from "lucide-react";
 
 export default function Home() {
   return (
@@ -44,31 +45,37 @@ export default function Home() {
       {/* 3. How It Works Snapshot */}
       <section className="py-20 bg-white border-b border-slate-100">
         <div className="container mx-auto px-4">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-3xl font-bold tracking-tight mb-4">Live Edge Without the Guesswork</h2>
-            <p className="text-slate-600">A simple, transparent process from slab to statement piece.</p>
-          </div>
+          <FadeIn delay={0.2} direction="up">
+            <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
+            <div className="grid md:grid-cols-3 gap-8 text-center max-w-5xl mx-auto">
 
-          <div className="grid md:grid-cols-3 gap-12 text-center relative">
-            <div className="space-y-4">
-              <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto text-xl font-bold text-slate-700 ring-4 ring-white">1</div>
-              <h3 className="text-xl font-bold">Choose Your Slab</h3>
-              <p className="text-slate-600 leading-relaxed">Browse real inventory with distinct sizes, species, and edge profiles.</p>
-            </div>
-            <div className="space-y-4">
-              <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto text-xl font-bold text-slate-700 ring-4 ring-white">2</div>
-              <h3 className="text-xl font-bold">Design the Build</h3>
-              <p className="text-slate-600 leading-relaxed">Select your base style, wood finish, and exact sizing with our team.</p>
-            </div>
-            <div className="space-y-4">
-              <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto text-xl font-bold text-slate-700 ring-4 ring-white">3</div>
-              <h3 className="text-xl font-bold">Deliver & Install</h3>
-              <p className="text-slate-600 leading-relaxed">We handle the heavy lifting with white-glove delivery and professional setup.</p>
-            </div>
+              {/* Step 1 */}
+              <div className="space-y-4">
+                <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto text-xl font-bold text-amber-600">1</div>
+                <h3 className="text-xl font-bold">Select Your Slab</h3>
+                <p className="text-slate-600">Browse our real-time inventory of kiln-dried slabs. Filter by size, species, and character.</p>
+              </div>
 
-            {/* Visual connector line for desktop */}
-            <div className="hidden md:block absolute top-8 left-[16%] right-[16%] h-0.5 bg-slate-100 -z-10" />
-          </div>
+              {/* Step 2 */}
+              <div className="space-y-4">
+                <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto text-xl font-bold text-amber-600">2</div>
+                <h3 className="text-xl font-bold">Customize Design</h3>
+                <p className="text-slate-600">Choose your base style, finish options, and edge detailing to match your space.</p>
+              </div>
+
+              {/* Step 3 */}
+              <div className="space-y-4">
+                <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto text-xl font-bold text-amber-600">3</div>
+                <h3 className="text-xl font-bold">Handcrafted & Delivered</h3>
+                <p className="text-slate-600">Our artisans build your piece in Texas. We ship nationwide with white-glove service.</p>
+              </div>
+            </div>
+          </FadeIn>
+
+          {/* Visual connector line for desktop */}
+          {/* The original connector line was inside the grid, but the new structure places the grid inside FadeIn.
+              Keeping it here for now, but it might need adjustment based on desired visual. */}
+          {/* <div className="hidden md:block absolute top-8 left-[16%] right-[16%] h-0.5 bg-slate-100 -z-10" /> */}
 
           <div className="mt-12 text-center">
             <Link href="/how-it-works">

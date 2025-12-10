@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getSlabById, getRelatedSlabs } from "@/lib/products";
 import { SlabCard } from "@/components/slabs/SlabCard";
+import { JsonLd } from "@/components/seo/JsonLd";
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
@@ -27,6 +28,27 @@ export default async function SlabDetail({ params }: { params: Promise<{ id: str
     if (!slab) return notFound();
 
     const relatedSlabs = getRelatedSlabs(slabId, 3);
+
+    const productSchema = {
+        "@context": "https://schema.org/",
+        "@type": "Product",
+        "name": slab.title,
+        "image": slab.images,
+        "description": slab.description?.replace(/<[^>]*>?/gm, '').substring(0, 300),
+        "sku": slab.sku,
+        "brand": {
+            "@type": "Brand",
+            "name": "Kovara"
+        },
+        "offers": {
+            "@type": "Offer",
+            "url": `https://kovara.com/slabs/${slab.id}`,
+            "priceCurrency": "USD",
+            "price": slab.price,
+            "availability": slab.isAvailable ? "https://schema.org/InStock" : "https://schema.org/SoldOut",
+            "itemCondition": "https://schema.org/NewCondition"
+        }
+    };
 
     return (
         <div className="bg-white min-h-screen pb-20">
@@ -169,6 +191,7 @@ export default async function SlabDetail({ params }: { params: Promise<{ id: str
                     Request Quote
                 </Button>
             </div>
+            <JsonLd data={productSchema} />
         </div>
     );
 }
