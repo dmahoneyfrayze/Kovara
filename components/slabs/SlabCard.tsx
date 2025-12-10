@@ -2,11 +2,10 @@ import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 
 interface SlabCardProps {
-    id: number;
+    id: number | string;
     species?: string;
     dimensions?: string;
-    price?: string;
-    imageUrl?: string; // Placeholder for now
+    imageUrl?: string;
     isAvailable?: boolean;
 }
 
@@ -18,10 +17,10 @@ export function SlabCard({
     isAvailable = true
 }: SlabCardProps) {
     return (
-        <div className="group bg-white rounded-lg border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col">
-            <div className="aspect-[3/4] bg-slate-200 relative">
+        <Link href={`/slabs/${id}`} className="group block cursor-pointer">
+            <div className="aspect-[3/4] bg-slate-200 relative overflow-hidden rounded-lg">
                 {imageUrl ? (
-                    <img src={imageUrl} alt={species} className="w-full h-full object-cover" />
+                    <img src={imageUrl} alt={species} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                 ) : (
                     <div className="absolute inset-0 flex items-center justify-center text-slate-400 font-light">Slab Image</div>
                 )}
@@ -30,18 +29,18 @@ export function SlabCard({
                         Available
                     </div>
                 )}
-            </div>
-            <div className="p-4 flex flex-col flex-grow">
-                <h3 className="font-bold text-lg mb-1 group-hover:text-amber-700 transition-colors">
-                    {species} #{id}
-                </h3>
-                <p className="text-sm text-slate-500 mb-4">{dimensions}</p>
-                <div className="mt-auto">
-                    <Link href={`/slabs/${id}`} passHref>
-                        <Button className="w-full" size="sm" variant="secondary">View Slab</Button>
-                    </Link>
+
+                {/* Hover Overlay */}
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                    <span className="text-white font-medium text-sm flex items-center justify-center border border-white/30 rounded py-2 hover:bg-white hover:text-black transition-colors">
+                        View Details
+                    </span>
                 </div>
             </div>
-        </div>
+            <div className="mt-3">
+                <h3 className="font-bold text-slate-900 group-hover:text-amber-700 transition-colors">{species} #{id}</h3>
+                <p className="text-sm text-slate-500">{dimensions}</p>
+            </div>
+        </Link>
     );
 }

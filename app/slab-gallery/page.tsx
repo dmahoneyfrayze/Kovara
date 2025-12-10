@@ -1,8 +1,10 @@
 import { Button } from "@/components/ui/Button";
 import { SlabCard } from "@/components/slabs/SlabCard";
+import { getAllSlabs } from "@/lib/products";
 import { Filter, ChevronDown } from "lucide-react";
 
 export default function SlabGallery() {
+    const slabs = getAllSlabs();
     return (
         <div className="bg-white min-h-screen pb-20">
             {/* 1. Header Section */}
@@ -66,69 +68,32 @@ export default function SlabGallery() {
                                     Width <ChevronDown className="w-4 h-4 text-slate-400" />
                                 </h3>
                                 {/* Mock Range Slider */}
-                                <div className="h-6 bg-slate-100 rounded relative">
-                                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-slate-300 rounded"></div>
-                                    <div className="absolute left-1/4 right-1/4 top-1/2 -translate-y-1/2 h-1 bg-amber-600 rounded"></div>
-                                    <div className="absolute left-1/4 top-1/2 -translate-y-1/2 w-3 h-3 bg-white border-2 border-amber-600 rounded-full shadow cursor-pointer"></div>
-                                    <div className="absolute right-1/4 top-1/2 -translate-y-1/2 w-3 h-3 bg-white border-2 border-amber-600 rounded-full shadow cursor-pointer"></div>
-                                </div>
-                                <div className="flex justify-between text-xs text-slate-500">
-                                    <span>24"</span>
-                                    <span>60"</span>
-                                </div>
+                                <Button variant="outline" size="sm">8</Button>
+                                <Button variant="outline" size="sm">Next</Button>
                             </div>
                         </div>
                     </aside>
 
-                    {/* 3. Main Grid */}
+                    {/* Main Grid */}
                     <div className="flex-1">
-                        <div className="flex items-center justify-between mb-6">
-                            <span className="text-slate-500 text-sm">Showing 12 of 48 Slabs</span>
-                            <div className="flex items-center gap-2">
-                                <span className="text-sm font-medium text-slate-700">Sort by:</span>
-                                <select className="text-sm border-none bg-transparent font-semibold text-slate-900 focus:ring-0 cursor-pointer">
-                                    <option>Newest Arrivals</option>
-                                    <option>Price: Low to High</option>
-                                    <option>Price: High to Low</option>
-                                    <option>Length: Longest First</option>
-                                </select>
-                            </div>
-                        </div>
-
                         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {[
-                                "https://shopkovara.com/cdn/shop/products/5FT-Parota-Live-Edge-Dining-Table_540x.jpg",
-                                "https://shopkovara.com/cdn/shop/products/6FT-Parota-Live-Edge-Dining-Table_540x.jpg",
-                                "https://shopkovara.com/cdn/shop/products/7FT-Parota-Live-Edge-Dining-Table_540x.jpg",
-                                "https://shopkovara.com/cdn/shop/products/CHIRICANO-J22977CHI_540x.jpg",
-                                "https://shopkovara.com/cdn/shop/products/5FT-Parota-Live-Edge-Dining-Table_540x.jpg",
-                                "https://shopkovara.com/cdn/shop/products/6FT-Parota-Live-Edge-Dining-Table_540x.jpg",
-                                "https://shopkovara.com/cdn/shop/products/7FT-Parota-Live-Edge-Dining-Table_540x.jpg",
-                                "https://shopkovara.com/cdn/shop/products/CHIRICANO-J22977CHI_540x.jpg",
-                                "https://shopkovara.com/cdn/shop/products/5FT-Parota-Live-Edge-Dining-Table_540x.jpg",
-                            ].map((img, i) => (
+                            {slabs.map((slab) => (
                                 <SlabCard
-                                    key={i}
-                                    id={300 + i}
-                                    species={i % 3 === 0 ? "Black Walnut" : "Parota Slab"}
-                                    dimensions='96" x 38" x 2"'
-                                    imageUrl={img}
+                                    key={slab.id}
+                                    id={slab.id}
+                                    species={slab.species}
+                                    dimensions={slab.dimensions}
+                                    imageUrl={slab.images[0]}
+                                    isAvailable={slab.isAvailable}
                                 />
                             ))}
-                        </div>
-
-                        {/* Pagination Wireframe */}
-                        <div className="mt-12 flex justify-center gap-2">
-                            <Button variant="outline" size="sm" disabled>Previous</Button>
-                            <Button variant="secondary" size="sm" className="bg-slate-900 text-white hover:bg-slate-800">1</Button>
-                            <Button variant="outline" size="sm">2</Button>
-                            <Button variant="outline" size="sm">3</Button>
-                            <span className="flex items-end px-2 text-slate-400">...</span>
-                            <Button variant="outline" size="sm">8</Button>
-                            <Button variant="outline" size="sm">Next</Button>
+                            {slabs.length === 0 && (
+                                <div className="col-span-full py-20 text-center">
+                                    <p className="text-slate-500">No slabs found matching your criteria.</p>
+                                </div>
+                            )}
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

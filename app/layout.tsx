@@ -7,8 +7,15 @@ import { Footer } from "@/components/layout/Footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Kovara | Live Edge Tables & Custom Furniture",
-  description: "Premium live edge slabs, designed for real spaces. Custom tables crafted in DFW.",
+  title: {
+    default: "Kovara | Live Edge Slabs & Custom Furniture in DFW",
+    template: "%s | Kovara"
+  },
+  description: "Premium ethically sourced Parota and Walnut live edge slabs. Custom dining tables, conference tables, and desks handcrafted in Arlington, Texas.",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export default function RootLayout({
