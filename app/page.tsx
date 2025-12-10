@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/Button";
 import { SlabCard } from "@/components/slabs/SlabCard";
 import { FadeIn } from "@/components/ui/FadeIn";
 import Link from "next/link";
-import { ArrowRight, Star, ShoppingCart, MessageSquare, MoveRight, Check } from "lucide-react";
+import { ArrowRight, Star, ShoppingCart, MessageSquare, MoveRight, Check, MapPin, Truck, Camera } from "lucide-react";
 
 import { getAllSlabs } from "@/lib/products";
 
@@ -15,35 +15,74 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
 
       {/* 2. Hero Section */}
-      <section className="relative bg-slate-50 py-20 lg:py-32 overflow-hidden">
-        <div className="container mx-auto px-4 grid lg:grid-cols-2 gap-12 items-center">
+      <section className="relative bg-white py-20 lg:py-28 overflow-hidden">
+        <div className="container mx-auto px-4 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div className="space-y-8 relative z-10">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 leading-[1.1]">
-              Live Edge Slabs, Designed for <span className="text-slate-500">Real Spaces.</span>
+
+            {/* Trust / Social Proof Banner */}
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-50 border border-amber-100 text-amber-900 text-sm font-medium mb-2">
+              <span className="flex gap-0.5">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <Star key={i} className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+                ))}
+              </span>
+              <span className="text-slate-600 ml-1">300+ Happy Clients in DFW & Beyond</span>
+            </div>
+
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-slate-900 leading-[1.05] font-serif">
+              Texas Crafted. <br />
+              <span className="text-slate-500 italic">Built for Generations.</span>
             </h1>
-            <p className="text-lg md:text-xl text-slate-600 max-w-lg">
-              We take the guesswork out of custom furniture. Choose from unique Parota slabs in DFW, and let our team craft the perfect table for your home.
+            <p className="text-lg md:text-xl text-slate-600 max-w-lg leading-relaxed">
+              We don't just sell slabs—we craft heirlooms. Visit our Arlington studio to hand-select your unique Parota masterpiece, finished by local artisans.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
+
+            <div className="flex flex-col sm:flex-row gap-4 pt-2">
               <Link href="/slab-gallery">
-                <Button size="lg" className="w-full sm:w-auto bg-slate-900 text-white hover:bg-slate-800">
-                  Browse Slab Gallery
+                <Button size="lg" className="w-full sm:w-auto bg-slate-900 text-white hover:bg-slate-800 h-14 px-8 text-lg">
+                  Browse Active Inventory
                 </Button>
               </Link>
               <Link href="/book-consult">
-                <Button variant="outline" size="lg" className="w-full sm:w-auto border-slate-300 text-slate-700 hover:bg-white hover:text-slate-900">
-                  Book a Design Consult
+                <Button variant="outline" size="lg" className="w-full sm:w-auto border-slate-300 text-slate-900 hover:bg-slate-50 h-14 px-8 text-lg">
+                  Visit the Studio
                 </Button>
               </Link>
             </div>
+
+            {/* Trust Cluster */}
+            <div className="pt-8 border-t border-slate-100 grid grid-cols-2 md:grid-cols-3 gap-6 text-sm text-slate-600">
+              <div className="flex items-center gap-2">
+                <MapPin className="w-5 h-5 text-amber-600 flex-shrink-0" />
+                <span><strong>Arlington, TX</strong><br />Studio & Warehouse</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Camera className="w-5 h-5 text-amber-600 flex-shrink-0" />
+                <span><strong>What you see</strong><br />is what you get</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Truck className="w-5 h-5 text-amber-600 flex-shrink-0" />
+                <span><strong>White Glove</strong><br />Insured Delivery</span>
+              </div>
+            </div>
+
           </div>
 
-          <div className="relative aspect-[4/3] lg:aspect-square bg-slate-200 rounded-lg overflow-hidden flex items-center justify-center border border-slate-300">
-            <img
-              src="https://shopkovara.com/cdn/shop/files/Kovara-Gallery-Page-Hero-1-2.jpg?v=1691508287&width=1500"
-              alt="Kovara Live Edge Slab"
-              className="w-full h-full object-cover"
-            />
+          <div className="relative">
+            <div className="aspect-[4/3] lg:aspect-square bg-slate-100 rounded-2xl overflow-hidden shadow-2xl skew-y-0 relative z-10">
+              <img
+                src="https://shopkovara.com/cdn/shop/files/Kovara-Gallery-Page-Hero-1-2.jpg?v=1691508287&width=1500"
+                alt="Kovara Studio in Arlington, Texas"
+                className="w-full h-full object-cover"
+              />
+              {/* Image Badge */}
+              <div className="absolute bottom-6 right-6 bg-white/90 backdrop-blur px-4 py-3 rounded-lg shadow-lg border border-white/50 max-w-xs">
+                <p className="font-serif italic text-lg text-slate-900">"The quality is unmatched. Better than the photos."</p>
+                <div className="text-xs font-bold text-slate-500 mt-1 uppercase tracking-wider">— Sarah Jenkins, Dallas</div>
+              </div>
+            </div>
+            {/* Decorative pattern/blob behind */}
+            <div className="absolute -top-12 -right-12 w-full h-full bg-amber-50 rounded-full blur-3xl opacity-50 -z-10"></div>
           </div>
         </div>
       </section>

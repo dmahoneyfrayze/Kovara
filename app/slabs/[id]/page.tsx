@@ -113,14 +113,17 @@ export default async function SlabDetail({ params }: { params: Promise<{ id: str
                             {/* Price Block */}
                             <div className="bg-slate-50 p-5 rounded-lg border border-slate-200 mb-6">
                                 <div className="flex items-center gap-2 mb-1">
-                                    <span className="bg-red-100 text-red-700 text-xs font-bold px-2 py-0.5 rounded">30% OFF</span>
+                                    <span className="bg-slate-900 text-white text-xs font-bold px-2 py-0.5 rounded uppercase tracking-wider">Studio Direct Pricing</span>
                                 </div>
                                 <div className="flex items-baseline gap-3 mb-1">
                                     <span className="text-3xl font-bold text-slate-900">${slab.price.toLocaleString()}</span>
-                                    <span className="text-lg text-slate-400 line-through">${regularPrice.toLocaleString()}</span>
+                                    <span className="text-lg text-slate-400 line-through decoration-slate-300">
+                                        <span className="text-sm font-normal text-slate-400 mr-1">Retail:</span>
+                                        ${regularPrice.toLocaleString()}
+                                    </span>
                                 </div>
-                                <div className="text-sm text-green-600 font-medium mb-4">
-                                    You save ${savings.toLocaleString()}
+                                <div className="text-sm text-slate-600 font-medium mb-4">
+                                    You save ${savings.toLocaleString()} by buying direct.
                                 </div>
 
                                 <div className="text-xs text-slate-500 flex items-center gap-1 border-t border-slate-200 pt-3">
