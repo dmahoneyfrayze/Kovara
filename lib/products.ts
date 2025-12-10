@@ -6,7 +6,12 @@ export interface Slab {
     id: string; // Using Handle or Variant SKU as ID
     title: string;
     species: string;
-    dimensions: string;
+    length: number;
+    width: number;
+    thickness: number;
+    dimensions: string; // Restored for UI compatibility
+    seating: string | null;
+    shape: 'Rectangular' | 'Round' | 'Other';
     price: number;
     description: string;
     images: string[];
@@ -29,6 +34,7 @@ interface ShopifyProductRow {
     'Width (product.metafields.custom.width)': string;
     'Thickness (product.metafields.custom.thickness)': string;
     'Variant Inventory Qty': string;
+    'Tags': string;
 }
 
 export function getAllSlabs(): Slab[] {
@@ -48,11 +54,42 @@ export function getAllSlabs(): Slab[] {
             if (!handle) return;
 
             if (!productMap.has(handle)) {
-                // Initial setup for this product
-                const dimStr = `${row['Length (product.metafields.custom.length)'] || '?'} x ${row['Width (product.metafields.custom.width)'] || '?'} x ${row['Thickness (product.metafields.custom.thickness)'] || '?'}`;
 
-                // Clean description: remove HTML tags for simple view, or keep if rendering HTML
-                // For now, let's keep a simplified version or the raw HTML needed
+                // Parse Dimensions (Handle '120 Inches', '120', etc)
+                const parseDim = (val: string) => {
+                    if (!val) return 0;
+                    return parseFloat(val.toLowerCase().replace('inches', '').replace('"', '').trim()) || 0;
+                };
+
+                const length = parseDim(row['Length (product.metafields.custom.length)']);
+                const width = parseDim(row['Width (product.metafields.custom.width)']);
+                const thickness = parseDim(row['Thickness (product.metafields.custom.thickness)']);
+
+                // Parse Tags for Seating and Shape
+                const tags = row.Tags || '';
+
+                // Seating
+                let seating: string | null = null;
+                const seatingMatch = tags.match(/Seating Capacity:\s*([\w\d\-\+]+)/i);
+                if (seatingMatch) {
+                    seating = seatingMatch[1].replace('Person', '').trim();
+                } else if (length > 0) {
+                    // Fallback heuristic if not tagged
+                    const feet = length / 12;
+                    if (feet < 6) seating = "4-6";
+                    else if (feet < 8) seating = "6-8";
+                    else if (feet < 10) seating = "8-10";
+                    else if (feet < 12) seating = "10-12";
+                    else seating = "12+";
+                }
+
+                // Shape
+                let shape: 'Rectangular' | 'Round' | 'Other' = 'Rectangular';
+                if (tags.toLowerCase().includes('type: round') || tags.toLowerCase().includes('round')) {
+                    shape = 'Round';
+                }
+
+                // Clean description
                 const desc = row['Body (HTML)']
                     ? row['Body (HTML)'].replace(/<[^>]*>?/gm, ' ').substring(0, 300).trim() + "..."
                     : "";
@@ -61,13 +98,18 @@ export function getAllSlabs(): Slab[] {
                     id: handle,
                     title: row.Title || "Untitled Slab",
                     species: row['Wood Species (product.metafields.custom.wood_species)'] || "Live Edge Slab",
-                    dimensions: dimStr.replace(/inch|"/g, '').trim() + '"', // Normalize dims
+                    length,
+                    width,
+                    thickness,
+                    dimensions: `${length}" x ${width}" x ${thickness}"`, // Derived for display
+                    seating,
+                    shape,
                     price: parseFloat(row['Variant Price'] || "0"),
                     description: desc,
                     images: [],
                     sku: row['Variant SKU'] || "",
-                    isAvailable: parseInt(row['Variant Inventory Qty'] || "0") > 0 || true, // Default true if tracking off
-                    features: ["Kiln Dried", "Flattened", "Sustainably Sourced"], // Defaults
+                    isAvailable: parseInt(row['Variant Inventory Qty'] || "0") > 0 || true,
+                    features: ["Kiln Dried", "Flattened", "Sustainably Sourced"],
                 });
             }
 
@@ -78,7 +120,7 @@ export function getAllSlabs(): Slab[] {
             }
         });
 
-        return Array.from(productMap.values()).filter(s => s.price > 0); // Filter out empty/dummy rows if any
+        return Array.from(productMap.values()).filter(s => s.price > 0);
     } catch (error) {
         console.error("Error parsing CSV:", error);
         return [];
@@ -92,6 +134,5 @@ export function getSlabById(handle: string): Slab | undefined {
 
 export function getRelatedSlabs(currentId: string, limit: number = 3): Slab[] {
     const slabs = getAllSlabs();
-    // Simple logic: exclude current, take random or first N
     return slabs.filter(s => s.id !== currentId).slice(0, limit);
 }

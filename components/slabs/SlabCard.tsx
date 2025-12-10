@@ -2,11 +2,12 @@ import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 
 interface SlabCardProps {
-    id: number | string;
-    species?: string;
-    dimensions?: string;
+    id: string;
+    species: string;
+    dimensions: string;
     imageUrl?: string;
-    isAvailable?: boolean;
+    isAvailable: boolean;
+    price?: number;
 }
 
 export function SlabCard({
@@ -14,7 +15,8 @@ export function SlabCard({
     species = "Parota Slab",
     dimensions = "108\" x 40\" x 2.25\"",
     imageUrl,
-    isAvailable = true
+    isAvailable = true,
+    price
 }: SlabCardProps) {
     return (
         <Link href={`/slabs/${id}`} className="group block cursor-pointer">
@@ -37,9 +39,18 @@ export function SlabCard({
                     </span>
                 </div>
             </div>
-            <div className="mt-3">
-                <h3 className="font-bold text-slate-900 group-hover:text-amber-700 transition-colors">{species} #{id}</h3>
-                <p className="text-sm text-slate-500">{dimensions}</p>
+            <div className="flex justify-between items-end mt-3">
+                <div>
+                    <h3 className="font-serif text-lg text-slate-900 group-hover:text-amber-700 transition-colors">
+                        {species}
+                    </h3>
+                    <p className="text-sm text-slate-500">{dimensions}</p>
+                </div>
+                {price && (
+                    <span className="font-medium text-slate-900">
+                        ${price.toLocaleString()}
+                    </span>
+                )}
             </div>
         </Link>
     );
