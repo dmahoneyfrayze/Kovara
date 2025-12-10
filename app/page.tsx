@@ -4,7 +4,13 @@ import { FadeIn } from "@/components/ui/FadeIn";
 import Link from "next/link";
 import { ArrowRight, Star, ShoppingCart, MessageSquare, MoveRight, Check } from "lucide-react";
 
+import { getAllSlabs } from "@/lib/products";
+
 export default function Home() {
+  const slabs = getAllSlabs();
+  // Take first 4 available slabs for feature
+  const featuredSlabs = slabs.filter(s => s.isAvailable).slice(0, 4);
+
   return (
     <div className="flex flex-col min-h-screen">
 
@@ -72,11 +78,6 @@ export default function Home() {
             </div>
           </FadeIn>
 
-          {/* Visual connector line for desktop */}
-          {/* The original connector line was inside the grid, but the new structure places the grid inside FadeIn.
-              Keeping it here for now, but it might need adjustment based on desired visual. */}
-          {/* <div className="hidden md:block absolute top-8 left-[16%] right-[16%] h-0.5 bg-slate-100 -z-10" /> */}
-
           <div className="mt-12 text-center">
             <Link href="/how-it-works">
               <Button variant="link" className="text-slate-600 font-semibold hover:text-slate-900">View Full Process <MoveRight className="ml-2 h-4 w-4" /></Button>
@@ -85,7 +86,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 4. Featured Slabs Carousel (Grid for Wireframe) */}
+      {/* 4. Featured Slabs Carousel */}
       <section className="py-20 bg-slate-50">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-end mb-12">
@@ -99,13 +100,15 @@ export default function Home() {
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { id: 201, img: "https://shopkovara.com/cdn/shop/products/5FT-Parota-Live-Edge-Dining-Table_540x.jpg" },
-              { id: 202, img: "https://shopkovara.com/cdn/shop/products/6FT-Parota-Live-Edge-Dining-Table_540x.jpg" },
-              { id: 203, img: "https://shopkovara.com/cdn/shop/products/7FT-Parota-Live-Edge-Dining-Table_540x.jpg" },
-              { id: 204, img: "https://shopkovara.com/cdn/shop/products/CHIRICANO-J22977CHI_540x.jpg" }
-            ].map((slab) => (
-              <SlabCard key={slab.id} id={slab.id} imageUrl={slab.img} />
+            {featuredSlabs.map((slab) => (
+              <SlabCard
+                key={slab.id}
+                id={slab.id}
+                imageUrl={slab.images[0]}
+                species={slab.species}
+                dimensions={slab.dimensions}
+                isAvailable={slab.isAvailable}
+              />
             ))}
           </div>
 

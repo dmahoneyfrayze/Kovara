@@ -6,6 +6,7 @@ import { getSlabById, getRelatedSlabs } from "@/lib/products";
 import { SlabCard } from "@/components/slabs/SlabCard";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { CountdownTimer } from "@/components/marketing/CountdownTimer";
+import { AddToCartButton, MobileAddToCartButton } from "@/components/cart/AddToCartButton";
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
@@ -156,9 +157,14 @@ export default async function SlabDetail({ params }: { params: Promise<{ id: str
 
                             {/* Action Buttons */}
                             <div className="space-y-3 mb-6">
-                                <Button size="lg" className="w-full bg-slate-900 hover:bg-slate-800 text-white h-14 text-lg shadow-xl shadow-slate-200">
-                                    Add to cart
-                                </Button>
+                                <AddToCartButton
+                                    id={slab.id}
+                                    title={slab.title}
+                                    price={slab.price}
+                                    image={slab.images[0]}
+                                    sku={slab.sku}
+                                    slug={slab.id}
+                                />
                                 <Button variant="outline" className="w-full h-12 border-slate-300">
                                     Buy with <span className="font-bold ml-1">PayPal</span>
                                 </Button>
@@ -269,11 +275,15 @@ export default async function SlabDetail({ params }: { params: Promise<{ id: str
                     <span className="block text-xs text-slate-500 uppercase">Total</span>
                     <span className="font-bold text-xl text-slate-900">${slab.price.toLocaleString()}</span>
                 </div>
-                <Button className="bg-slate-900 text-white px-8">
-                    Add to Cart
-                </Button>
+                <MobileAddToCartButton
+                    id={slab.id}
+                    title={slab.title}
+                    price={slab.price}
+                    image={slab.images[0]}
+                    sku={slab.sku}
+                    slug={slab.id}
+                />
             </div>
         </div>
     );
 }
-

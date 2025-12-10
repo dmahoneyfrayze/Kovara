@@ -2,13 +2,15 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/Button";
-import { Menu, Search, X } from "lucide-react";
+import { Menu, Search, X, ShoppingBag } from "lucide-react";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
+import { useCart } from "@/context/CartContext";
 
 export function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const pathname = usePathname();
+    const { toggleCart, cartCount } = useCart();
 
     const navLinks = [
         { href: "/", label: "Home" },
@@ -46,6 +48,19 @@ export function Header() {
                     <button className="text-slate-500 hover:text-slate-900">
                         <Search className="h-5 w-5" />
                         <span className="sr-only">Search</span>
+                    </button>
+
+                    <button
+                        onClick={toggleCart}
+                        className="text-slate-900 hover:text-amber-600 relative p-1"
+                    >
+                        <ShoppingBag className="h-5 w-5" />
+                        {cartCount > 0 && (
+                            <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-amber-600 text-white text-[10px] font-bold flex items-center justify-center">
+                                {cartCount}
+                            </span>
+                        )}
+                        <span className="sr-only">Cart</span>
                     </button>
 
                     <Link href="/design-consult" className="hidden md:flex">
